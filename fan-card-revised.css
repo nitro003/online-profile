@@ -1,0 +1,369 @@
+/* fan-card-revised.css */
+
+:root {
+  --fan-card-width: 280px;
+  --fan-card-height: 360px;
+  --fan-card-radius: 20px;
+  --fan-card-bg: #9dffc8;
+  --fan-card-text: #082620;
+  --fan-card-muted: #31433c;
+  --fan-card-line: rgba(15, 23, 42, 0.08);
+  --fan-card-shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+
+  --fan-lift-distance: 96px;
+  --fan-sticky-top: 10vh;
+  --fan-scene-height: 220vh;
+  --fan-stage-height: 620px;
+  --fan-track-height: 500px;
+
+  --accent-1: #9dffc8;
+  --accent-2: #fe9ab9;
+  --accent-3: #fef9f2;
+  --accent-4: #ffcddc;
+}
+
+.fan-cards-section {
+  position: relative;
+  height: var(--fan-scene-height);
+}
+
+.fan-cards-stage {
+  position: sticky;
+  top: var(--fan-sticky-top);
+  width: min(1100px, 94vw);
+  height: var(--fan-stage-height);
+  margin-inline: auto;
+}
+
+.fan-cards-intro {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--fan-card-text);
+}
+
+.fan-cards-intro h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.1;
+  margin: 0 0 0.75rem;
+}
+
+.fan-cards-intro p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.fan-cards-track {
+  position: relative;
+  width: 100%;
+  height: var(--fan-track-height);
+}
+
+.fan-card {
+  --card-x: 0px;
+  --card-y: calc(var(--fan-lift-distance) * -1);
+  --card-r: 0deg;
+  --card-range-start: 8%;
+  --card-range-end: 18%;
+
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  width: var(--fan-card-width);
+  height: var(--fan-card-height);
+  padding: 1.25rem;
+  border-radius: var(--fan-card-radius);
+  color: var(--fan-card-text);
+  border: 1px solid var(--fan-card-line);
+  box-shadow: var(--fan-card-shadow);
+  transform-origin: center bottom;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  z-index: 1;
+
+  animation-name: fan-card-lift;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+  animation-timeline: scroll(root block);
+  animation-range: var(--card-range-start) var(--card-range-end);
+}
+
+.fan-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0.82)
+  );
+  z-index: 0;
+}
+
+.fan-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.fan-card-tag {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 0.9rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #334155;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.fan-card-title {
+  margin: 0 0 0.85rem;
+  font-size: 1.3rem;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.fan-card-body {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.58;
+  color: var(--fan-card-muted);
+}
+
+/* desktop fan */
+.fan-card.pos-1 {
+  background: var(--accent-1);
+  --card-x: -270px;
+  --card-y: -96px;
+  --card-r: -14deg;
+  --card-range-start: 8%;
+  --card-range-end: 18%;
+  z-index: 1;
+}
+
+.fan-card.pos-2 {
+  background: var(--accent-2);
+  --card-x: -90px;
+  --card-y: -96px;
+  --card-r: -5deg;
+  --card-range-start: 18%;
+  --card-range-end: 28%;
+  z-index: 2;
+}
+
+.fan-card.pos-3 {
+  background: var(--accent-3);
+  --card-x: 90px;
+  --card-y: -96px;
+  --card-r: 5deg;
+  --card-range-start: 28%;
+  --card-range-end: 38%;
+  z-index: 3;
+}
+
+.fan-card.pos-4 {
+  background: var(--accent-4);
+  --card-x: 270px;
+  --card-y: -96px;
+  --card-r: 14deg;
+  --card-range-start: 38%;
+  --card-range-end: 48%;
+  z-index: 4;
+}
+
+@keyframes fan-card-lift {
+  0% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--card-x)), 24px) rotate(var(--card-r)) scale(0.98);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--card-x)), 8px) rotate(var(--card-r)) scale(0.99);
+  }
+  72% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--card-x)), calc(var(--card-y) - 16px)) rotate(var(--card-r)) scale(1.01);
+  }
+  86% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--card-x)), calc(var(--card-y) + 6px)) rotate(var(--card-r)) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--card-x)), var(--card-y)) rotate(var(--card-r)) scale(1);
+  }
+}
+
+@supports not (animation-timeline: scroll(root block)) {
+  .fan-card {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--card-x)), var(--card-y)) rotate(var(--card-r)) scale(1);
+  }
+}
+
+/* laptop / medium desktop */
+@media (max-width: 1100px) {
+  :root {
+    --fan-card-width: 250px;
+    --fan-card-height: 320px;
+    --fan-stage-height: 580px;
+  }
+
+  .fan-card.pos-1 { --card-x: -220px; --card-r: -12deg; }
+  .fan-card.pos-2 { --card-x: -75px;  --card-r: -4deg; }
+  .fan-card.pos-3 { --card-x: 75px;   --card-r: 4deg; }
+  .fan-card.pos-4 { --card-x: 220px;  --card-r: 12deg; }
+}
+
+/* tablet */
+@media (max-width: 768px) {
+  :root {
+    --fan-card-width: 210px;
+    --fan-card-height: 290px;
+    --fan-stage-height: 520px;
+    --fan-track-height: 400px;
+    --fan-lift-distance: 76px;
+  }
+
+  .fan-card {
+    padding: 1rem;
+  }
+
+  .fan-card-title {
+    font-size: 1.08rem;
+  }
+
+  .fan-card-body {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .fan-card.pos-1 { --card-x: -120px; --card-r: -9deg; }
+  .fan-card.pos-2 { --card-x: -40px;  --card-r: -3deg; }
+  .fan-card.pos-3 { --card-x: 40px;   --card-r: 3deg; }
+  .fan-card.pos-4 { --card-x: 120px;  --card-r: 9deg; }
+}
+
+/* mobile: switch from fan to stacked deck */
+@media (max-width: 640px) {
+  :root {
+    --fan-card-width: 200px;
+    --fan-card-height: 260px;
+    --fan-stage-height: 430px;
+    --fan-track-height: 320px;
+    --fan-lift-distance: 60px;
+    --fan-sticky-top: 8vh;
+    --fan-scene-height: 500vh;
+  }
+
+  .fan-cards-stage {
+    width: min(100%, 94vw);
+  }
+
+  .fan-cards-intro {
+    margin-bottom: 1rem;
+  }
+
+  .fan-cards-intro h2 {
+    font-size: clamp(1.35rem, 7vw, 1.85rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .fan-cards-intro p {
+    font-size: 0.88rem;
+  }
+
+  .fan-card {
+    padding: 0.85rem;
+  }
+
+  .fan-card-tag {
+    margin-bottom: 0.55rem;
+    padding: 0.22rem 0.5rem;
+    font-size: 0.62rem;
+  }
+
+  .fan-card-title {
+    font-size: 0.98rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .fan-card-body {
+    font-size: 0.79rem;
+    line-height: 1.34;
+  }
+
+  /* stacked deck on mobile */
+  .fan-card.pos-1 {
+    --card-x: -50px;
+    --card-y: -54px;
+    --card-r: -3deg;
+    z-index: 1;
+  }
+
+  .fan-card.pos-2 {
+    --card-x: -16px;
+    --card-y: -58px;
+    --card-r: -1deg;
+    z-index: 2;
+  }
+
+  .fan-card.pos-3 {
+    --card-x: 16px;
+    --card-y: -62px;
+    --card-r: 1deg;
+    z-index: 3;
+  }
+
+  .fan-card.pos-4 {
+    --card-x: 50px;
+    --card-y: -66px;
+    --card-r: 3deg;
+    z-index: 4;
+  }
+}
+
+/* very small phones */
+@media (max-width: 400px) {
+  :root {
+    --fan-card-width: 150px;
+    --fan-card-height: 235px;
+    --fan-stage-height: 390px;
+    --fan-track-height: 290px;
+    --fan-lift-distance: 52px;
+  }
+
+  .fan-card-body {
+    font-size: 0.74rem;
+  }
+
+  .fan-card.pos-1 {
+    --card-x: -40px;
+    --card-y: -48px;
+    --card-r: -2.5deg;
+  }
+
+  .fan-card.pos-2 {
+    --card-x: -12px;
+    --card-y: -52px;
+    --card-r: -0.8deg;
+  }
+
+  .fan-card.pos-3 {
+    --card-x: 12px;
+    --card-y: -56px;
+    --card-r: 0.8deg;
+  }
+
+  .fan-card.pos-4 {
+    --card-x: 40px;
+    --card-y: -60px;
+    --card-r: 2.5deg;
+  }
+}
